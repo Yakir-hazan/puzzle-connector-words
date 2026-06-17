@@ -337,11 +337,45 @@ function launchConfetti() {
 }
 
 // ══════════════════════════════════
-// SOUNDS
+// SOUNDS — singleton AudioContext (iOS safe)
 // ══════════════════════════════════
+let _audioCtx = null;
+
+function getAudioContext() {
+  if (!_audioCtx) {
+    _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  // iOS suspends AudioContext until a user gesture — resume if needed
+  if (_audioCtx.state === 'suspended') {
+    _audioCtx.resume();
+  }
+  return _audioCtx;
+}
+
+// "Unlock" AudioContext on first user touch (iOS requirement)
+function unlockAudio() {
+  try {
+    const ctx = getAudioContext();
+    // Play a silent buffer to unlock
+    const buf = ctx.createBuffer(1, 1, 22050);
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.connect(ctx.destination);
+    src.start(0);
+    console.log('🔊 AudioContext unlocked, state:', ctx.state);
+  } catch(e) {
+    console.warn('Audio unlock failed:', e);
+  }
+  document.removeEventListener('touchstart', unlockAudio);
+  document.removeEventListener('touchend', unlockAudio);
+}
+
+document.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+document.addEventListener('touchend',   unlockAudio, { once: true, passive: true });
+
 function playSound(type) {
   try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = getAudioContext();
     const o = ctx.createOscillator();
     const g = ctx.createGain();
     o.connect(g); g.connect(ctx.destination);
@@ -356,7 +390,9 @@ function playSound(type) {
       o.frequency.setValueAtTime(200, ctx.currentTime + 0.15);
     }
     o.start(); o.stop(ctx.currentTime + 0.4);
-  } catch(e) {}
+  } catch(e) {
+    console.warn('playSound error:', e);
+  }
 }
 
 // ══════════════════════════════════
@@ -388,8 +424,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initWelcome();
 
-  $('btn-check').addEventListener('click', checkAnswer);
-  $('btn-hint').addEventListener('click', showHint);
+  // click + touchend כדי למנוע עיכוב 300ms ב-iOS Safari
+  function addTapListener(id, handler) {
+    const el = $(id);
+    let tapped = false;
+    el.addEventListener('touchend', (e) => {
+      if (el.disabled) return;
+      e.preventDefault();
+      tapped = true;
+      handler();
+      setTimeout(() => tapped = false, 400);
+    }, { passive: false });
+    el.addEventListener('click', () => {
+      if (tapped) return; // כבר טופל ב-touchend
+      handler();
+    });
+  }
+
+  addTapListener('btn-check', checkAnswer);
+  addTapListener('btn-hint', showHint);
 
   $('btn-play-again').addEventListener('click', () => startGame(state.level));
   $('btn-change-level').addEventListener('click', () => showScreen('welcome'));
