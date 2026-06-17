@@ -1,0 +1,16 @@
+{
+  "name": "בונה הפאזל של המשפט",
+  "short_name": "פאזל מילים",
+  "description": "משחק חינוכי לילדים — מצא את מילת הקישור הנכונה",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF8ED",
+  "theme_color": "#E8A838",
+  "lang": "he",
+  "dir": "rtl",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#E8A838">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="פאזל מילים">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="app.css">
+  <title>בונה הפאזל של המשפט</title>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     WELCOME SCREEN
+══════════════════════════════════ -->
+<div id="screen-welcome" class="screen">
+  <div class="welcome-owl">🦉</div>
+  <h1 class="welcome-title">בונה הפאזל<br>של המשפט</h1>
+  <p class="welcome-subtitle">מצא את מילת הקישור הנכונה<br>וחבר את שני חלקי המשפט!</p>
+
+  <div class="level-select">
+    <button class="level-btn l1" data-level="1">
+      <span>🌱 מתחיל</span>
+      <span class="level-badge">כי / לכן / אבל</span>
+    </button>
+    <button class="level-btn l2" data-level="2">
+      <span>⭐ מתקדם</span>
+      <span class="level-badge">כאשר / למרות / כדי</span>
+    </button>
+    <button class="level-btn l3" data-level="3">
+      <span>🏆 אלוף</span>
+      <span class="level-badge">כל המילים</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     GAME SCREEN
+══════════════════════════════════ -->
+<div id="screen-game" class="screen hidden">
+
+  <!-- Header -->
+  <div class="game-header">
+    <button class="btn-back" id="btn-back">◀</button>
+    <div class="header-center">
+      <div class="stage-label" id="stage-num">שלב 1 מתוך 5</div>
+      <div class="stage-title" id="stage-title">רמה 1 — מתחיל</div>
+    </div>
+    <div class="score-badge">
+      ⭐ <span id="score-display">0</span>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="progress-text" id="progress-text">1/5</div>
+  </div>
+
+  <!-- Puzzle pieces -->
+  <div class="puzzle-area">
+    <div class="puzzle-pieces">
+      <div class="piece piece-right" id="part-a">החתול היה רעב מאוד</div>
+      <div class="connector-slot" id="connector-slot">?</div>
+      <div class="piece piece-left" id="part-b">הוא לא אכל כל היום</div>
+    </div>
+
+    <!-- Owl + speech bubble -->
+    <div class="owl-area">
+      <div class="owl-figure" id="owl-figure">🦉</div>
+      <div class="speech-bubble" id="speech-bubble">מצא את המילה שמחברת את הרעיונות!</div>
+    </div>
+  </div>
+
+  <!-- Word bank -->
+  <div class="options-area">
+    <div class="options-label">בחר את מילת הקישור הנכונה</div>
+    <div class="options-grid" id="options-grid">
+      <!-- injected by JS -->
+    </div>
+  </div>
+
+  <!-- Action bar -->
+  <div class="action-bar">
+    <button class="btn-hint" id="btn-hint">💡 רמז</button>
+    <button class="btn-check" id="btn-check" disabled>בדיקה ✓</button>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════
+     RESULT SCREEN
+══════════════════════════════════ -->
+<div id="screen-result" class="screen hidden">
+  <div class="result-owl">🦉</div>
+  <h2 class="result-title" id="result-title">מעולה! 🎉</h2>
+
+  <div class="result-score-display">
+    <div class="result-score-label">הניקוד שלך</div>
+    <div class="result-score-num" id="result-score-num">0</div>
+    <div class="result-stars" id="result-stars">⭐⭐⭐</div>
+  </div>
+
+  <div class="result-stats">
+    <div class="stat-card">
+      <div class="stat-val" id="result-correct">0</div>
+      <div class="stat-lbl">תשובות נכונות</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" id="result-total">0</div>
+      <div class="stat-lbl">סה"כ שאלות</div>
+    </div>
+  </div>
+
+  <div class="result-btns">
+    <button class="btn-primary" id="btn-play-again">🔄 שחק שוב</button>
+    <button class="btn-secondary" id="btn-change-level">🏠 בחר רמה</button>
+  </div>
+</div>
+
+<!-- Confetti canvas -->
+<canvas id="confetti-canvas"></canvas>
+
+<script src="puzzles.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
