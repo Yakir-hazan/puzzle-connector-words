@@ -98,7 +98,6 @@ function loadPuzzle() {
   const total = state.puzzles.length;
   const current = state.currentIndex + 1;
   $('stage-num').textContent = `שלב ${current} מתוך ${total}`;
-  $('stage-title').textContent = `רמה ${state.level} — ${LEVEL_NAMES[state.level]}`;
 
   // Progress
   const pct = ((current - 1) / total) * 100;
@@ -391,7 +390,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $('btn-check').addEventListener('click', checkAnswer);
   $('btn-hint').addEventListener('click', showHint);
-  $('btn-back').addEventListener('click', () => showScreen('welcome'));
 
   $('btn-play-again').addEventListener('click', () => startGame(state.level));
   $('btn-change-level').addEventListener('click', () => showScreen('welcome'));
