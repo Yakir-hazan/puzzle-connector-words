@@ -35,6 +35,7 @@ let screens = {};
 // SCREEN MANAGEMENT
 // ══════════════════════════════════
 function showScreen(name) {
+  console.log('showScreen:', name);
   Object.entries(screens).forEach(([k, el]) => {
     if (k === name) {
       el.style.display = 'flex';
@@ -54,9 +55,12 @@ function showScreen(name) {
 // WELCOME SCREEN
 // ══════════════════════════════════
 function initWelcome() {
-  document.querySelectorAll('.level-btn').forEach(btn => {
+  const btns = document.querySelectorAll('.level-btn');
+  console.log('initWelcome — buttons found:', btns.length);
+  btns.forEach(btn => {
     const handler = (e) => {
       e.preventDefault();
+      console.log('level-btn fired, level:', btn.dataset.level);
       startGame(parseInt(btn.dataset.level));
     };
     btn.addEventListener('touchend', handler, { passive: false });
@@ -376,6 +380,12 @@ document.addEventListener('DOMContentLoaded', () => {
   screens.welcome = $('screen-welcome');
   screens.game    = $('screen-game');
   screens.result  = $('screen-result');
+
+  console.log('DOM ready, screens:', {
+    welcome: !!screens.welcome,
+    game: !!screens.game,
+    result: !!screens.result
+  });
 
   initWelcome();
 
