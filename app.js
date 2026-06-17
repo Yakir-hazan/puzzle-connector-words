@@ -29,11 +29,7 @@ const OWL_HINT    = (h) => h;
 // DOM REFS
 // ══════════════════════════════════
 const $ = (id) => document.getElementById(id);
-const screens = {
-  welcome: $('screen-welcome'),
-  game:    $('screen-game'),
-  result:  $('screen-result'),
-};
+let screens = {};
 
 // ══════════════════════════════════
 // SCREEN MANAGEMENT
@@ -376,6 +372,11 @@ function shuffle(arr) {
 // INIT
 // ══════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+  // Init screens after DOM is ready
+  screens.welcome = $('screen-welcome');
+  screens.game    = $('screen-game');
+  screens.result  = $('screen-result');
+
   initWelcome();
 
   $('btn-check').addEventListener('click', checkAnswer);
