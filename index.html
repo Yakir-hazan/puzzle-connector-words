@@ -126,6 +126,150 @@
 <!-- Confetti canvas -->
 <canvas id="confetti-canvas"></canvas>
 
+<!-- ══════════════════════════════════
+     DEV CONSOLE (triple-tap to toggle)
+══════════════════════════════════ -->
+<div id="dev-console">
+  <div id="dev-console-header">
+    <span>🛠 DEV CONSOLE</span>
+    <div style="display:flex;gap:8px">
+      <button id="dev-clear">clear</button>
+      <button id="dev-close">✕</button>
+    </div>
+  </div>
+  <div id="dev-log"></div>
+</div>
+
+<style>
+#dev-console {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 50vh;
+  background: rgba(0,0,0,0.92);
+  z-index: 9999;
+  flex-direction: column;
+  font-family: monospace;
+  font-size: 12px;
+  border-top: 2px solid #444;
+}
+#dev-console.open { display: flex; }
+#dev-console-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 12px;
+  background: #1a1a1a;
+  color: #aaa;
+  font-size: 13px;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+#dev-console-header button {
+  background: #333; border: none; color: #ccc;
+  padding: 3px 10px; border-radius: 4px; cursor: pointer;
+  font-size: 12px;
+}
+#dev-log {
+  flex: 1; overflow-y: auto;
+  padding: 8px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.dev-entry {
+  padding: 3px 6px;
+  border-radius: 4px;
+  word-break: break-all;
+  line-height: 1.5;
+}
+.dev-log   { color: #ddd; }
+.dev-info  { color: #60cfff; }
+.dev-warn  { color: #ffcc00; background: rgba(255,200,0,0.08); }
+.dev-error { color: #ff6060; background: rgba(255,60,60,0.1); }
+.dev-event { color: #80ff80; }
+.dev-time  { color: #666; font-size: 10px; margin-left: 6px; }
+</style>
+
+<script>
+(function() {
+  let tapCount = 0, tapTimer;
+  let consoleOpen = false;
+
+  // Triple-tap anywhere to toggle
+  document.addEventListener('touchstart', () => {
+    tapCount++;
+    clearTimeout(tapTimer);
+    tapTimer = setTimeout(() => { tapCount = 0; }, 600);
+    if (tapCount >= 3) {
+      tapCount = 0;
+      toggleDevConsole();
+    }
+  }, { passive: true });
+
+  function toggleDevConsole() {
+    consoleOpen = !consoleOpen;
+    document.getElementById('dev-console').classList.toggle('open', consoleOpen);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('dev-close').addEventListener('click', () => {
+      consoleOpen = false;
+      document.getElementById('dev-console').classList.remove('open');
+    });
+    document.getElementById('dev-clear').addEventListener('click', () => {
+      document.getElementById('dev-log').innerHTML = '';
+    });
+  });
+
+  function addEntry(type, args) {
+    const log = document.getElementById('dev-log');
+    if (!log) return;
+    const entry = document.createElement('div');
+    entry.className = `dev-entry dev-${type}`;
+    const time = new Date().toLocaleTimeString('he-IL', { hour12: false });
+    const msg = args.map(a => {
+      if (a instanceof Error) return a.stack || a.message;
+      if (typeof a === 'object') { try { return JSON.stringify(a, null, 1); } catch(e) { return String(a); } }
+      return String(a);
+    }).join(' ');
+    entry.innerHTML = `${msg}<span class="dev-time">${time}</span>`;
+    log.appendChild(entry);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  // Override console methods
+  const _log   = console.log.bind(console);
+  const _info  = console.info.bind(console);
+  const _warn  = console.warn.bind(console);
+  const _error = console.error.bind(console);
+
+  console.log   = (...a) => { _log(...a);   addEntry('log', a); };
+  console.info  = (...a) => { _info(...a);  addEntry('info', a); };
+  console.warn  = (...a) => { _warn(...a);  addEntry('warn', a); };
+  console.error = (...a) => { _error(...a); addEntry('error', a); };
+
+  // Catch uncaught errors
+  window.addEventListener('error', e => {
+    addEntry('error', [`❌ ${e.message}`, `@ ${e.filename?.split('/').pop()}:${e.lineno}`]);
+  });
+  window.addEventListener('unhandledrejection', e => {
+    addEntry('error', [`❌ Promise: ${e.reason}`]);
+  });
+
+  // Log touch events on buttons
+  document.addEventListener('touchstart', e => {
+    if (e.target.matches('button, .level-btn, .option-btn')) {
+      addEntry('event', [`👆 touch: ${e.target.className || e.target.id}`]);
+    }
+  }, { passive: true });
+
+  document.addEventListener('click', e => {
+    if (e.target.matches('button, .level-btn, .option-btn')) {
+      addEntry('event', [`🖱 click: ${e.target.className || e.target.id}`]);
+    }
+  });
+
+  console.log('🛠 DevConsole ready — triple-tap to open');
+})();
+</script>
+
 <script src="puzzles.js"></script>
 <script src="app.js"></script>
 </body>
