@@ -40,7 +40,17 @@ const screens = {
 // ══════════════════════════════════
 function showScreen(name) {
   Object.entries(screens).forEach(([k, el]) => {
-    el.classList.toggle('hidden', k !== name);
+    if (k === name) {
+      el.style.display = 'flex';
+      el.style.visibility = 'visible';
+      el.style.pointerEvents = 'auto';
+      el.classList.remove('hidden');
+    } else {
+      el.style.display = 'none';
+      el.style.visibility = 'hidden';
+      el.style.pointerEvents = 'none';
+      el.classList.add('hidden');
+    }
   });
 }
 
