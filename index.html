@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#FFB300">
+  <meta name="theme-color" content="#dfba8c">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="פאזל מילים">
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app.css">
   <title>בונה הפאזל של המשפט</title>
 </head>
@@ -41,13 +41,11 @@
 
 <!-- GAME -->
 <div id="screen-game" class="screen hidden">
+
   <div class="game-header">
+    <div class="level-badge-header" id="stage-num">שלב 1: מילות קישור</div>
+    <div class="header-title">בונה הפאזל של המשפט</div>
     <div class="score-badge">⭐ <span id="score-display">0</span></div>
-    <div class="header-title-box">
-      <div class="header-title-main" id="stage-title">בונה הפאזל</div>
-      <div class="header-title-sub" id="stage-num">שלב 1 מתוך 5</div>
-    </div>
-    <button class="btn-back" id="btn-back">◀</button>
   </div>
 
   <div class="progress-wrap">
@@ -56,29 +54,35 @@
   </div>
 
   <div class="puzzle-area">
-    <div class="puzzle-pieces">
-      <div class="piece piece-right" id="part-b">החתול היה רעב מאוד</div>
-      <div class="connector-slot" id="connector-slot">?</div>
-      <div class="piece piece-left" id="part-a">הוא לא אכל כל היום</div>
+    <!-- Wood pieces -->
+    <div class="puzzle-board">
+      <div class="puzzle-piece piece-right" id="part-b">החתול היה רעב מאוד</div>
+      <div class="puzzle-slot" id="connector-slot">?</div>
+      <div class="puzzle-piece piece-left" id="part-a">הוא לא אכל כל היום</div>
     </div>
-    <div class="owl-area">
-      <div class="owl-figure" id="owl-figure">🦉</div>
-      <div class="speech-bubble" id="speech-bubble">מצא את המילה שמחברת את הרעיונות!</div>
+
+    <!-- Owl + bubble -->
+    <div class="footer-controls" style="margin-top:4px;">
+      <div class="assistant-box">
+        <div class="owl-figure" id="owl-figure">🦉</div>
+        <div class="speech-bubble" id="speech-bubble">מצא את המילה שמחברת את הרעיונות!</div>
+      </div>
+      <div class="action-buttons">
+        <button class="btn-hint" id="btn-hint">💡 רמז</button>
+        <button class="btn-check" id="btn-check" disabled>בדיקה ✓</button>
+      </div>
     </div>
   </div>
 
+  <!-- Options -->
   <div class="options-area">
     <div class="options-label">בחר את מילת הקישור הנכונה</div>
     <div class="options-grid" id="options-grid"></div>
   </div>
 
-  <div class="action-bar">
-    <div class="btn-hint-wrap">
-      <button class="btn-hint" id="btn-hint">💡</button>
-      <span class="btn-hint-label">רמז</span>
-    </div>
-    <button class="btn-check" id="btn-check" disabled>בדיקה ✓</button>
-  </div>
+  <!-- Bottom safe area spacer -->
+  <div style="height: max(12px, env(safe-area-inset-bottom)); flex-shrink:0;"></div>
+
 </div>
 
 <!-- RESULT -->
@@ -91,14 +95,8 @@
     <div class="result-stars" id="result-stars">⭐⭐⭐</div>
   </div>
   <div class="result-stats">
-    <div class="stat-card">
-      <div class="stat-val" id="result-correct">0</div>
-      <div class="stat-lbl">נכונות</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-val" id="result-total">0</div>
-      <div class="stat-lbl">סה"כ</div>
-    </div>
+    <div class="stat-card"><div class="stat-val" id="result-correct">0</div><div class="stat-lbl">נכונות</div></div>
+    <div class="stat-card"><div class="stat-val" id="result-total">0</div><div class="stat-lbl">סה"כ</div></div>
   </div>
   <div class="result-btns">
     <button class="btn-primary" id="btn-play-again">🔄 שחק שוב</button>
@@ -135,8 +133,8 @@
   function log(type,args){
     const el=document.createElement('div');
     el.className='dev-entry dev-'+type;
-    const t=new Date().toLocaleTimeString('he-IL',{hour12:false});
-    el.innerHTML=`<span class="dev-time">${t}</span> `+args.map(a=>typeof a==='object'?JSON.stringify(a):String(a)).join(' ');
+    const ts=new Date().toLocaleTimeString('he-IL',{hour12:false});
+    el.innerHTML=`<span class="dev-time">${ts}</span> `+args.map(a=>typeof a==='object'?JSON.stringify(a):String(a)).join(' ');
     const l=document.getElementById('dev-log');
     if(l){l.appendChild(el);l.scrollTop=l.scrollHeight;}
   }
