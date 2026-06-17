@@ -163,7 +163,7 @@ function selectConnector(word, btnEl) {
   $('btn-check').disabled = false;
 
   // Owl anticipation
-  setOwlMessage("בחרת: "" + word + "" — לחץ בדיקה!", false);
+  setOwlMessage(`בחרת: "${word}" — לחץ בדיקה!`, false);
 }
 
 // ══════════════════════════════════
