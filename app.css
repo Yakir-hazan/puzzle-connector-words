@@ -166,7 +166,7 @@ html, body {
 }
 
 /* CONNECTOR SLOT */
-.puzzle-slot {
+.connector-slot {
     width: 80px; min-width: 80px;
     border-top: 3px dashed var(--wood-border);
     border-bottom: 3px dashed var(--wood-border);
@@ -175,15 +175,15 @@ html, body {
     font-size: 16px; font-weight: 900; color: var(--text-dark);
     z-index: 3; transition: all 0.3s;
 }
-.puzzle-slot.filled {
+.connector-slot.filled {
     background: var(--blue-btn); color: white;
     border: 3px solid var(--blue-sh); font-size: 18px;
     animation: popIn 0.3s cubic-bezier(.34,1.56,.64,1);
 }
-.puzzle-slot.correct {
+.connector-slot.correct {
     background: var(--green-btn); color: white; border: 3px solid var(--green-sh);
 }
-.puzzle-slot.wrong {
+.connector-slot.wrong {
     background: #e74c3c; color: white; border: 3px solid #900;
     animation: shake 0.4s ease-in-out;
 }
