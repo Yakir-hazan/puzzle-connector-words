@@ -3,58 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#E8A838">
+  <meta name="theme-color" content="#FFB300">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="פאזל מילים">
   <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app.css">
   <title>בונה הפאזל של המשפט</title>
 </head>
 <body>
 
-<!-- ══════════════════════════════════
-     WELCOME SCREEN
-══════════════════════════════════ -->
+<!-- WELCOME SCREEN -->
 <div id="screen-welcome" class="screen">
-  <div class="welcome-owl">🦉</div>
-  <h1 class="welcome-title">בונה הפאזל<br>של המשפט</h1>
+
+  <div class="welcome-owl-wrap">
+    <div class="welcome-owl"></div>
+  </div>
+
+  <div class="welcome-title-box">
+    <div class="welcome-title">בונה הפאזל<br>של המשפט</div>
+  </div>
+
   <p class="welcome-subtitle">מצא את מילת הקישור הנכונה<br>וחבר את שני חלקי המשפט!</p>
 
   <div class="level-select">
     <button class="level-btn l1" data-level="1">
-      <span>🌱 מתחיל</span>
+      <span class="level-btn-label">🌱 מתחיל</span>
       <span class="level-badge">כי / לכן / אבל</span>
     </button>
     <button class="level-btn l2" data-level="2">
-      <span>⭐ מתקדם</span>
+      <span class="level-btn-label">⭐ מתקדם</span>
       <span class="level-badge">כאשר / למרות / כדי</span>
     </button>
     <button class="level-btn l3" data-level="3">
-      <span>🏆 אלוף</span>
+      <span class="level-btn-label">🏆 אלוף</span>
       <span class="level-badge">כל המילים</span>
     </button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     GAME SCREEN
-══════════════════════════════════ -->
+<!-- GAME SCREEN -->
 <div id="screen-game" class="screen hidden">
 
-  <!-- Header -->
   <div class="game-header">
     <button class="btn-back" id="btn-back">◀</button>
-    <div class="header-center">
-      <div class="stage-label" id="stage-num">שלב 1 מתוך 5</div>
-      <div class="stage-title" id="stage-title">רמה 1 — מתחיל</div>
+    <div class="header-title-box">
+      <div class="header-title-main" id="stage-title">בונה הפאזל של המשפט</div>
+      <div class="header-title-sub" id="stage-num">שלב 1: מילות קישור</div>
     </div>
-    <div class="score-badge">
-      ⭐ <span id="score-display">0</span>
-    </div>
+    <div class="score-badge">⭐ <span id="score-display">0</span></div>
   </div>
 
-  <!-- Progress -->
   <div class="progress-wrap">
     <div class="progress-bar">
       <div class="progress-fill" id="progress-fill" style="width:0%"></div>
@@ -62,42 +64,41 @@
     <div class="progress-text" id="progress-text">1/5</div>
   </div>
 
-  <!-- Puzzle pieces -->
   <div class="puzzle-area">
+    <!-- Wood puzzle pieces -->
     <div class="puzzle-pieces">
-      <div class="piece piece-right" id="part-a">החתול היה רעב מאוד</div>
+      <div class="piece piece-right" id="part-b">החתול היה רעב מאוד</div>
       <div class="connector-slot" id="connector-slot">?</div>
-      <div class="piece piece-left" id="part-b">הוא לא אכל כל היום</div>
+      <div class="piece piece-left" id="part-a">הוא לא אכל כל היום</div>
     </div>
 
-    <!-- Owl + speech bubble -->
+    <!-- Owl + bubble -->
     <div class="owl-area">
-      <div class="owl-figure" id="owl-figure">🦉</div>
+      <div class="owl-figure" id="owl-figure"></div>
       <div class="speech-bubble" id="speech-bubble">מצא את המילה שמחברת את הרעיונות!</div>
     </div>
   </div>
 
-  <!-- Word bank -->
+  <!-- Options -->
   <div class="options-area">
     <div class="options-label">בחר את מילת הקישור הנכונה</div>
-    <div class="options-grid" id="options-grid">
-      <!-- injected by JS -->
-    </div>
+    <div class="options-grid" id="options-grid"></div>
   </div>
 
   <!-- Action bar -->
   <div class="action-bar">
-    <button class="btn-hint" id="btn-hint">💡 רמז</button>
+    <div style="position:relative">
+      <button class="btn-hint" id="btn-hint">💡</button>
+      <span class="btn-hint-label">רמז</span>
+    </div>
     <button class="btn-check" id="btn-check" disabled>בדיקה ✓</button>
   </div>
 
 </div>
 
-<!-- ══════════════════════════════════
-     RESULT SCREEN
-══════════════════════════════════ -->
+<!-- RESULT SCREEN -->
 <div id="screen-result" class="screen hidden">
-  <div class="result-owl">🦉</div>
+  <div class="result-owl"></div>
   <h2 class="result-title" id="result-title">מעולה! 🎉</h2>
 
   <div class="result-score-display">
@@ -109,11 +110,11 @@
   <div class="result-stats">
     <div class="stat-card">
       <div class="stat-val" id="result-correct">0</div>
-      <div class="stat-lbl">תשובות נכונות</div>
+      <div class="stat-lbl">נכונות</div>
     </div>
     <div class="stat-card">
       <div class="stat-val" id="result-total">0</div>
-      <div class="stat-lbl">סה"כ שאלות</div>
+      <div class="stat-lbl">סה"כ</div>
     </div>
   </div>
 
@@ -123,12 +124,9 @@
   </div>
 </div>
 
-<!-- Confetti canvas -->
 <canvas id="confetti-canvas"></canvas>
 
-<!-- ══════════════════════════════════
-     DEV CONSOLE (triple-tap to toggle)
-══════════════════════════════════ -->
+<!-- DEV CONSOLE -->
 <div id="dev-console">
   <div id="dev-console-header">
     <span>🛠 DEV CONSOLE</span>
@@ -142,131 +140,72 @@
 
 <style>
 #dev-console {
-  display: none;
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  height: 50vh;
-  background: rgba(0,0,0,0.92);
-  z-index: 9999;
-  flex-direction: column;
-  font-family: monospace;
-  font-size: 12px;
+  display: none; position: fixed;
+  bottom: 0; left: 0; right: 0; height: 50vh;
+  background: rgba(0,0,0,0.93); z-index: 9999;
+  flex-direction: column; font-family: monospace; font-size: 12px;
   border-top: 2px solid #444;
 }
 #dev-console.open { display: flex; }
 #dev-console-header {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 6px 12px;
-  background: #1a1a1a;
-  color: #aaa;
-  font-size: 13px;
-  border-bottom: 1px solid #333;
-  flex-shrink: 0;
+  padding: 6px 12px; background: #1a1a1a; color: #aaa;
+  font-size: 13px; border-bottom: 1px solid #333; flex-shrink: 0;
 }
 #dev-console-header button {
   background: #333; border: none; color: #ccc;
-  padding: 3px 10px; border-radius: 4px; cursor: pointer;
-  font-size: 12px;
+  padding: 3px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;
 }
 #dev-log {
-  flex: 1; overflow-y: auto;
-  padding: 8px;
+  flex: 1; overflow-y: auto; padding: 8px;
   display: flex; flex-direction: column; gap: 3px;
 }
-.dev-entry {
-  padding: 3px 6px;
-  border-radius: 4px;
-  word-break: break-all;
-  line-height: 1.5;
-}
+.dev-entry { padding: 3px 6px; border-radius: 4px; word-break: break-all; line-height: 1.5; }
 .dev-log   { color: #ddd; }
 .dev-info  { color: #60cfff; }
 .dev-warn  { color: #ffcc00; background: rgba(255,200,0,0.08); }
 .dev-error { color: #ff6060; background: rgba(255,60,60,0.1); }
 .dev-event { color: #80ff80; }
-.dev-time  { color: #666; font-size: 10px; margin-left: 6px; }
+.dev-time  { color: #666; font-size: 10px; margin-right: 6px; }
 </style>
 
 <script>
 (function() {
-  let tapCount = 0, tapTimer;
-  let consoleOpen = false;
-
-  // Triple-tap anywhere to toggle
+  let tapCount = 0, tapTimer, consoleOpen = false;
   document.addEventListener('touchstart', () => {
     tapCount++;
     clearTimeout(tapTimer);
     tapTimer = setTimeout(() => { tapCount = 0; }, 600);
-    if (tapCount >= 3) {
-      tapCount = 0;
-      toggleDevConsole();
-    }
+    if (tapCount >= 3) { tapCount = 0; toggleDev(); }
   }, { passive: true });
-
-  function toggleDevConsole() {
+  function toggleDev() {
     consoleOpen = !consoleOpen;
     document.getElementById('dev-console').classList.toggle('open', consoleOpen);
   }
-
   document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('dev-close').addEventListener('click', () => {
-      consoleOpen = false;
-      document.getElementById('dev-console').classList.remove('open');
-    });
-    document.getElementById('dev-clear').addEventListener('click', () => {
-      document.getElementById('dev-log').innerHTML = '';
-    });
+    document.getElementById('dev-close').onclick = () => { consoleOpen = false; document.getElementById('dev-console').classList.remove('open'); };
+    document.getElementById('dev-clear').onclick = () => { document.getElementById('dev-log').innerHTML = ''; };
   });
-
   function addEntry(type, args) {
-    const log = document.getElementById('dev-log');
-    if (!log) return;
-    const entry = document.createElement('div');
-    entry.className = `dev-entry dev-${type}`;
+    const log = document.getElementById('dev-log'); if (!log) return;
+    const el = document.createElement('div');
+    el.className = `dev-entry dev-${type}`;
     const time = new Date().toLocaleTimeString('he-IL', { hour12: false });
-    const msg = args.map(a => {
-      if (a instanceof Error) return a.stack || a.message;
-      if (typeof a === 'object') { try { return JSON.stringify(a, null, 1); } catch(e) { return String(a); } }
-      return String(a);
-    }).join(' ');
-    entry.innerHTML = `${msg}<span class="dev-time">${time}</span>`;
-    log.appendChild(entry);
-    log.scrollTop = log.scrollHeight;
+    const msg = args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
+    el.innerHTML = `<span class="dev-time">${time}</span> ${msg}`;
+    log.appendChild(el); log.scrollTop = log.scrollHeight;
   }
-
-  // Override console methods
-  const _log   = console.log.bind(console);
-  const _info  = console.info.bind(console);
-  const _warn  = console.warn.bind(console);
-  const _error = console.error.bind(console);
-
+  const _log = console.log.bind(console), _warn = console.warn.bind(console), _error = console.error.bind(console);
   console.log   = (...a) => { _log(...a);   addEntry('log', a); };
-  console.info  = (...a) => { _info(...a);  addEntry('info', a); };
   console.warn  = (...a) => { _warn(...a);  addEntry('warn', a); };
   console.error = (...a) => { _error(...a); addEntry('error', a); };
-
-  // Catch uncaught errors
-  window.addEventListener('error', e => {
-    addEntry('error', [`❌ ${e.message}`, `@ ${e.filename?.split('/').pop()}:${e.lineno}`]);
-  });
-  window.addEventListener('unhandledrejection', e => {
-    addEntry('error', [`❌ Promise: ${e.reason}`]);
-  });
-
-  // Log touch events on buttons
+  window.addEventListener('error', e => addEntry('error', [`❌ ${e.message} @ ${e.filename?.split('/').pop()}:${e.lineno}`]));
+  window.addEventListener('unhandledrejection', e => addEntry('error', [`❌ Promise: ${e.reason}`]));
   document.addEventListener('touchstart', e => {
-    if (e.target.matches('button, .level-btn, .option-btn')) {
-      addEntry('event', [`👆 touch: ${e.target.className || e.target.id}`]);
-    }
+    if (e.target.matches('button,.level-btn,.option-btn'))
+      addEntry('event', [`👆 ${e.target.className} id=${e.target.id}`]);
   }, { passive: true });
-
-  document.addEventListener('click', e => {
-    if (e.target.matches('button, .level-btn, .option-btn')) {
-      addEntry('event', [`🖱 click: ${e.target.className || e.target.id}`]);
-    }
-  });
-
-  console.log('🛠 DevConsole ready — triple-tap to open');
+  console.log('🛠 DevConsole ready — triple-tap');
 })();
 </script>
 
