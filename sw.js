@@ -1,4 +1,4 @@
-const CACHE_NAME = 'puzzle-game-v1';
+const CACHE_NAME = 'puzzle-game-v10';
 const ASSETS = [
   './',
   './index.html',
