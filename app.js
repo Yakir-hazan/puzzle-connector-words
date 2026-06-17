@@ -49,9 +49,12 @@ function showScreen(name) {
 // ══════════════════════════════════
 function initWelcome() {
   document.querySelectorAll('.level-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    const handler = (e) => {
+      e.preventDefault();
       startGame(parseInt(btn.dataset.level));
-    });
+    };
+    btn.addEventListener('touchend', handler, { passive: false });
+    btn.addEventListener('click', handler);
   });
 }
 
