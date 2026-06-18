@@ -169,3 +169,51 @@ body::after {
 .dev-entry { padding: 3px 6px; border-radius: 4px; word-break: break-all; line-height: 1.5; }
 .dev-log { color: #ddd; } .dev-warn { color: #ffcc00; } .dev-error { color: #ff6060; background: rgba(255,60,60,0.1); } .dev-event { color: #80ff80; }
 .dev-time { color: #555; font-size: 10px; margin-right: 6px; }
+
+/* ══ PUZZLE CONNECT ANIMATION ══ */
+
+/* שלב 1 — מילת הקישור נוחתת עם bounce */
+.connector-slot.connector-land {
+  animation: connectorLand 0.35s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes connectorLand {
+  0%   { transform: translateY(-40px) scale(0.4); opacity: 0; }
+  60%  { transform: translateY(6px)  scale(1.15); opacity: 1; }
+  100% { transform: translateY(0)    scale(1);    opacity: 1; }
+}
+
+/* שלב 2 — החלקים גולשים פנימה */
+.piece-slide-right {
+  animation: slideRight 0.45s cubic-bezier(.25,.46,.45,.94) forwards;
+}
+.piece-slide-left {
+  animation: slideLeft  0.45s cubic-bezier(.25,.46,.45,.94) forwards;
+}
+@keyframes slideRight {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(8px); }
+}
+@keyframes slideLeft {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-8px); }
+}
+
+/* שלב 3 — flash מאחד */
+.puzzle-board.pieces-connected {
+  animation: connectFlash 0.5s ease forwards;
+}
+@keyframes connectFlash {
+  0%   { filter: brightness(1); }
+  30%  { filter: brightness(1.6) drop-shadow(0 0 18px rgba(76,223,126,0.8)); }
+  100% { filter: brightness(1); }
+}
+
+/* זוהר ירוק על הקונקטור */
+.connector-slot.connector-glow {
+  animation: connectorGlow 0.5s ease forwards;
+}
+@keyframes connectorGlow {
+  0%   { box-shadow: none; }
+  40%  { box-shadow: 0 0 24px 8px rgba(62,207,110,0.7), inset 0 0 12px rgba(62,207,110,0.4); }
+  100% { box-shadow: 0 0 8px 2px rgba(62,207,110,0.2); }
+}
