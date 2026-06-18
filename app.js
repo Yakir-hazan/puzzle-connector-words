@@ -192,17 +192,18 @@ function checkAnswer() {
     state.score += points;
     state.correctCount++;
     updateScoreDisplay();
-    checkBtn.textContent = 'הבא ➜';
-    checkBtn.className = 'btn-check next-mode';
-    checkBtn.disabled = false;
 
     const msg = OWL_CORRECT[Math.floor(Math.random() * OWL_CORRECT.length)];
     setOwlMessage(`${msg} +${points} נקודות!`, true);
-
-    if (state.correctCount >= 3) {
-      launchConfetti();
-    }
     playSound('correct');
+
+    // 🎭 אנימציית חיבור פאזל
+    animatePuzzleConnect(() => {
+      checkBtn.textContent = 'הבא ➜';
+      checkBtn.className = 'btn-check next-mode';
+      checkBtn.disabled = false;
+      if (state.correctCount >= 3) launchConfetti();
+    });
   } else {
     slot.className = 'connector-slot wrong';
     setOwlMessage(OWL_WRONG[Math.floor(Math.random() * OWL_WRONG.length)], true);
@@ -393,6 +394,41 @@ function playSound(type) {
   } catch(e) {
     console.warn('playSound error:', e);
   }
+}
+
+// ══════════════════════════════════
+// PUZZLE CONNECT ANIMATION
+// ══════════════════════════════════
+function animatePuzzleConnect(onDone) {
+  const partA   = $('part-a');
+  const partB   = $('part-b');
+  const slot    = $('connector-slot');
+  const board   = document.querySelector('.puzzle-board');
+
+  // שלב 1 — מילת הקישור "נוחתת" (bounce-in)
+  slot.classList.add('connector-land');
+
+  setTimeout(() => {
+    // שלב 2 — שני החלקים גולשים פנימה
+    board.classList.add('pieces-connecting');
+    partA.classList.add('piece-slide-right');
+    partB.classList.add('piece-slide-left');
+
+    setTimeout(() => {
+      // שלב 3 — flash מאחד + זוהר
+      board.classList.add('pieces-connected');
+      slot.classList.add('connector-glow');
+
+      setTimeout(() => {
+        // שלב 4 — ניקוי + callback
+        board.classList.remove('pieces-connecting', 'pieces-connected');
+        partA.classList.remove('piece-slide-right');
+        partB.classList.remove('piece-slide-left');
+        slot.classList.remove('connector-land', 'connector-glow');
+        if (onDone) onDone();
+      }, 500);
+    }, 450);
+  }, 300);
 }
 
 // ══════════════════════════════════
